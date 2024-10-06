@@ -300,7 +300,7 @@ func (g *Game) Update() error {
 	}
 
 	// Move down faster
-	if koebiten.IsKeyJustPressed(koebiten.KeyRight) || koebiten.IsKeyJustPressed(koebiten.Key9) {
+	if koebiten.IsKeyJustPressed(koebiten.KeyRight) {
 		for g.isValidPosition(g.tetromino.x, g.tetromino.y+1, g.currentShape()) {
 			g.tetromino.y++
 		}
@@ -320,9 +320,9 @@ func (g *Game) Update() error {
 	}
 
 	// Rotate the block
-	if koebiten.IsKeyJustPressed(koebiten.Key4) || koebiten.IsKeyJustPressed(koebiten.KeyRotaryRight) {
+	if koebiten.IsKeyJustPressed(koebiten.KeyA) {
 		g.rotateTetromino(true)
-	} else if koebiten.IsKeyJustPressed(koebiten.Key8) || koebiten.IsKeyJustPressed(koebiten.KeyRotaryLeft) {
+	} else if koebiten.IsKeyJustPressed(koebiten.KeyB) {
 		g.rotateTetromino(false)
 	}
 	return nil

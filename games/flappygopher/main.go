@@ -10,6 +10,7 @@ import (
 func main() {
 	koebiten.SetWindowSize(128, 64)
 	koebiten.SetWindowTitle("Flappy Gopher")
+	koebiten.SetRotate(koebiten.Rotation180)
 
 	game := flappygopher.NewGame()
 

@@ -47,24 +47,15 @@ func (a ADCDevice) Get() bool {
 }
 
 func init() {
-	machine.InitADC()
-	ax := machine.ADC{Pin: machine.GPIO29}
-	ay := machine.ADC{Pin: machine.GPIO28}
-	ax.Configure(machine.ADCConfig{})
-	ay.Configure(machine.ADCConfig{})
-
-	adcPins = []ADCDevice{
-		{ADC: ax, PressedFunc: func() bool { return ax.Get() < 0x6000 }}, // left
-		{ADC: ax, PressedFunc: func() bool { return 0xA000 < ax.Get() }}, // right
-		{ADC: ay, PressedFunc: func() bool { return 0xA000 < ay.Get() }}, // up
-		{ADC: ay, PressedFunc: func() bool { return ay.Get() < 0x6000 }}, // down
-	}
-
 	i2c := machine.I2C0
 	i2c.Configure(machine.I2CConfig{
 		Frequency: 2_800_000,
-		SDA:       machine.GPIO12,
-		SCL:       machine.GPIO13,
+		// rp2040
+		//SDA: machine.GPIO0,
+		//SCL: machine.GPIO1,
+		// xiao-samd21 or xiao-rp2040
+		SDA: machine.D4,
+		SCL: machine.D5,
 	})
 
 	d := ssd1306.NewI2C(i2c)
@@ -77,65 +68,37 @@ func init() {
 	d.ClearDisplay()
 	display = &d
 
+	// rp2040
+	//gpioPins = []machine.Pin{
+	//	machine.GPIO4,  // up
+	//	machine.GPIO5,  // left
+	//	machine.GPIO6,  // down
+	//	machine.GPIO7,  // right
+	//	machine.GPIO27, // A
+	//	machine.GPIO28, // B
+	//}
+	// xiao-samd21 or xiao-rp2040
 	gpioPins = []machine.Pin{
-		machine.GPIO2, // rotary
-		machine.GPIO0, // joystick
+		machine.D10, // up
+		machine.D9,  // left
+		machine.D8,  // down
+		machine.D7,  // right
+		machine.D1,  // A
+		machine.D2,  // B
 	}
 
 	for _, p := range gpioPins {
 		p.Configure(machine.PinConfig{Mode: machine.PinInputPullup})
 	}
 
-	colPins = []machine.Pin{
-		machine.GPIO5,
-		machine.GPIO6,
-		machine.GPIO7,
-		machine.GPIO8,
-	}
-
-	rowPins = []machine.Pin{
-		machine.GPIO9,
-		machine.GPIO10,
-		machine.GPIO11,
-	}
-
-	for _, c := range colPins {
-		c.Configure(machine.PinConfig{Mode: machine.PinOutput})
-		c.Low()
-	}
-
-	for _, c := range rowPins {
-		c.Configure(machine.PinConfig{Mode: machine.PinInputPulldown})
-	}
-
-	rotaryPins = []machine.Pin{
-		machine.GPIO4,
-		machine.GPIO3,
-	}
-
-	if invertRotaryPins {
-		rotaryPins = []machine.Pin{
-			machine.GPIO3,
-			machine.GPIO4,
-		}
-	}
-	enc = encoders.NewQuadratureViaInterrupt(rotaryPins[0], rotaryPins[1])
-
-	enc.Configure(encoders.QuadratureConfig{
-		Precision: 4,
-	})
-
-	state = make([]State, len(colPins)*len(rowPins)+len(gpioPins)+len(rotaryPins)+len(adcPins))
-	cycle = make([]int, len(colPins)*len(rowPins)+len(gpioPins)+len(rotaryPins)+len(adcPins))
-	duration = make([]int, len(colPins)*len(rowPins)+len(gpioPins)+len(rotaryPins)+len(adcPins))
+	state = make([]State, len(gpioPins))
+	cycle = make([]int, len(gpioPins))
+	duration = make([]int, len(gpioPins))
 
 }
 
 func keyUpdate() {
 	keyGpioUpdate()
-	keyRotaryUpdate()
-	keyMatrixUpdate()
-	keyJoystickUpdate()
 }
 
 func keyGpioUpdate() {

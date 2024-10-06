@@ -5,30 +5,16 @@ import "sync"
 type Key int
 
 const (
-	KeyMax = 20
+	KeyMax = 6
 )
 
 const (
-	Key0 Key = iota
-	Key1
-	Key2
-	Key3
-	Key4
-	Key5
-	Key6
-	Key7
-	Key8
-	Key9
-	Key10
-	Key11
-	KeyRotaryButton
-	KeyJoystick
-	KeyRotaryLeft
-	KeyRotaryRight
-	KeyLeft
+	KeyLeft = iota
 	KeyRight
 	KeyUp
 	KeyDown
+	KeyA
+	KeyB
 )
 
 type pos struct {
