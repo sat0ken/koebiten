@@ -1,10 +1,9 @@
 package main
 
 import (
-	"log"
-
 	"github.com/sago35/koebiten"
 	"github.com/sago35/koebiten/games/flappygopher/flappygopher"
+	"log"
 )
 
 func main() {

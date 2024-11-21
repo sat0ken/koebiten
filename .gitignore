@@ -1,0 +1,4 @@
+.idea
+*.elf
+*.uf2
+games/checker

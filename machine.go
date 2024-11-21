@@ -51,11 +51,11 @@ func init() {
 	i2c.Configure(machine.I2CConfig{
 		Frequency: 2_800_000,
 		// rp2040
-		//SDA: machine.GPIO0,
-		//SCL: machine.GPIO1,
+		SDA: machine.GPIO0,
+		SCL: machine.GPIO1,
 		// xiao-samd21 or xiao-rp2040
-		SDA: machine.D4,
-		SCL: machine.D5,
+		//SDA: machine.D4,
+		//SCL: machine.D5,
 	})
 
 	d := ssd1306.NewI2C(i2c)
@@ -69,23 +69,23 @@ func init() {
 	display = &d
 
 	// rp2040
-	//gpioPins = []machine.Pin{
-	//	machine.GPIO4,  // up
-	//	machine.GPIO5,  // left
-	//	machine.GPIO6,  // down
-	//	machine.GPIO7,  // right
-	//	machine.GPIO27, // A
-	//	machine.GPIO28, // B
-	//}
-	// xiao-samd21 or xiao-rp2040
 	gpioPins = []machine.Pin{
-		machine.D10, // up
-		machine.D9,  // left
-		machine.D8,  // down
-		machine.D7,  // right
-		machine.D1,  // A
-		machine.D2,  // B
+		machine.GPIO4,  // up
+		machine.GPIO5,  // left
+		machine.GPIO6,  // down
+		machine.GPIO7,  // right
+		machine.GPIO27, // A
+		machine.GPIO28, // B
 	}
+	// xiao-samd21 or xiao-rp2040
+	//gpioPins = []machine.Pin{
+	//	machine.D10, // up
+	//	machine.D9,  // left
+	//	machine.D8,  // down
+	//	machine.D7,  // right
+	//	machine.D1,  // A
+	//	machine.D2,  // B
+	//}
 
 	for _, p := range gpioPins {
 		p.Configure(machine.PinConfig{Mode: machine.PinInputPullup})
