@@ -9,6 +9,7 @@ import (
 	"github.com/sago35/koebiten"
 	"tinygo.org/x/drivers/ili9341"
 	"tinygo.org/x/drivers/pixel"
+	"tinygo.org/x/tinydraw"
 )
 
 var Device = &device{}
@@ -145,8 +146,8 @@ func InitDisplay(dev *ili9341.Device, width, height int) *Display {
 
 	ox, oy := d.getImageTopLeftForCentering()
 	w, h := d.img.Size()
-	//tinydraw.Rectangle(dev, ox-1, oy-1, int16(w)+2, int16(h)+2, white)
-	dev.FillRectangle(ox-1, oy-1, int16(w)+2, int16(h)+2, white)
+	tinydraw.Rectangle(dev, ox-1, oy-1, int16(w)+2, int16(h)+2, white)
+	// dev.FillRectangle(ox-1, oy-1, int16(w)+2, int16(h)+2, white)
 
 	return d
 }
