@@ -9,7 +9,6 @@ import (
 	"github.com/sago35/koebiten"
 	"tinygo.org/x/drivers/ili9341"
 	"tinygo.org/x/drivers/pixel"
-	"tinygo.org/x/tinydraw"
 )
 
 var Device = &device{}
@@ -39,7 +38,7 @@ func (z *device) Init() error {
 		SCK:       machine.SPI0_SCK_PIN,
 		SDO:       machine.SPI0_SDO_PIN,
 		SDI:       machine.SPI0_SDI_PIN,
-		Frequency: 40000000,
+		Frequency: 40e6,
 	})
 
 	// configure backlight
@@ -54,11 +53,14 @@ func (z *device) Init() error {
 	)
 
 	// configure display
-	d.Configure(ili9341.Config{})
-	d.SetRotation(ili9341.Rotation270)
-	d.FillRectangle(0, 0, 320, 240, black)
-
+	d.Configure(ili9341.Config{
+		Width:            320,
+		Height:           240,
+		DisplayInversion: true,
+	})
 	backlight.High()
+	d.SetRotation(ili9341.Rotation0Mirror)
+	d.FillRectangle(0, 0, 320, 240, black)
 
 	z.display = InitDisplay(d, 128, 64)
 
@@ -143,7 +145,8 @@ func InitDisplay(dev *ili9341.Device, width, height int) *Display {
 
 	ox, oy := d.getImageTopLeftForCentering()
 	w, h := d.img.Size()
-	tinydraw.Rectangle(dev, ox-1, oy-1, int16(w)+2, int16(h)+2, white)
+	//tinydraw.Rectangle(dev, ox-1, oy-1, int16(w)+2, int16(h)+2, white)
+	dev.FillRectangle(ox-1, oy-1, int16(w)+2, int16(h)+2, white)
 
 	return d
 }
