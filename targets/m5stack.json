@@ -1,0 +1,7 @@
+{
+    "inherits": [
+        "m5stack"
+    ],
+    "build-tags": ["m5stack_koebiten"]
+}
+

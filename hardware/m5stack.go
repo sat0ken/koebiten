@@ -1,4 +1,4 @@
-//go:build tinygo && m5stack
+//go:build tinygo && m5stack_koebiten
 
 package hardware
 
